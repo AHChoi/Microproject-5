@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+    <h1>Soldier's Shooting Practice</h1>
+    ---------------------------------------------------------
+    <p>Click the button 20 times as fast as you can</p>
+    ---------------------------------------------------------
+
+    <p id="status"></p>
+    <p id="highscore"></p>
+
+    <p>Time starts when you click the button.</p>
+    <button type="button" onclick="reset()">Reset</button>
+    <br><br>
+    ---------------------------------------------------------
+    <br><br>
+
+    <button type="button" onclick="clickAdd()"> <h1>Click Me</h1></button>
+
+    <h1><p id="clicks"></p></h1>
+    ---------------------------------------------------------
+    <p id="result"></p>
+    <p id="highPrompt"></p>
+    <p id="name">
+        Name: <input id="keyValue" type="text" /><br />
+        Attribute: <input id="attributeText" type="text" /><br />
+        Score: <input id="valueText" type="text" /><br />
+        <button id="putThis">Enter</button> | <button id="getThis">Get</button> | <button id="updateThis">Update</button> | <button id="deleteThis">Delete</button>
+    <p id="validName"></p>
+
+        <script>
+
+        document.getElementById('highscore').style.visibility = 'hidden';
+
+        var clicks = 0;
+        var start, end;
+        var time;
+        var arrayNum;
+
+        var highscore = '{"highscore":[' +
+            '{"score": "Alex", "time": "999"},' +
+            '{"score": "Alex", "time": "999"},' +
+            '{"score": "Alex", "time": "999"}]}';
+
+        var data = JSON.parse(highscore);
+
+        
+        //Display all highscores
+        data.highscore.forEach(function(item)
+                                   {
+                                   document.getElementById("highscore").innerHTML += item.score + ": " + item.time + " seconds" + "<br>";
+                                   });
+
+        document.getElementById('keyValue').style.visibility = 'hidden';
+        document.getElementById('valueText').style.visibility = 'hidden';
+        document.getElementById('attributeText').style.visibility = 'hidden';
+        document.getElementById('putThis').style.visibility = 'hidden';
+        document.getElementById('getThis').style.visibility = 'hidden';
+        document.getElementById('updateThis').style.visibility = 'hidden';
+        document.getElementById('deleteThis').style.visibility = 'hidden';
+        document.getElementById("clicks").innerHTML = clicks;
+
+        //Add clicks and calculate time
+        function clickAdd()
+        {
+            clicks += 1;
+            document.getElementById("clicks").innerHTML = clicks;
+
+            //Get time when clicks start
+            if (clicks == 1)
+            {
+                start = new Date().getTime();
+            }
+
+            //Get time when clicks reaches 20 and calculate total time
+            if (clicks == 20) 
+            {
+                end = new Date().getTime();
+                time = (end - start)/1000;
+                document.getElementById("result").innerHTML = "Time: " + time + " seconds";
+                checkHigh();
+            }   
+        }
+
+        //Resets the number of clicks and hide elements
+        function reset()
+        {
+            document.getElementById("highPrompt").innerHTML = "";
+            document.getElementById("validName").innerHTML = "";
+            document.getElementById('keyValue').style.visibility = 'hidden';
+        document.getElementById('valueText').style.visibility = 'hidden';
+        document.getElementById('attributeText').style.visibility = 'hidden';
+        document.getElementById('putThis').style.visibility = 'hidden';
+        document.getElementById('getThis').style.visibility = 'hidden';
+        document.getElementById('updateThis').style.visibility = 'hidden';
+        document.getElementById('deleteThis').style.visibility = 'hidden';
+            clicks = 0;
+            document.getElementById("clicks").innerHTML = clicks;
+            document.getElementById("result").innerHTML = "";
+        }
+
+        //Check for highscore and change the time
+        function checkHigh()
+        {
+            var time1 = data.highscore[0].time;
+            var time2 = data.highscore[1].time;
+            var time3 = data.highscore[2].time; 
+            var name1 = data.highscore[0].score;
+            var name2 = data.highscore[1].score;
+            var name3 = data.highscore[2].score; 
+
+            if(time < time1)
+            {
+                document.getElementById("highPrompt").innerHTML = "You got the new highscore!";
+                document.getElementById('keyValue').style.visibility = 'visible';
+        document.getElementById('valueText').style.visibility = 'visible';
+        document.getElementById('attributeText').style.visibility = 'visible';
+        document.getElementById('putThis').style.visibility = 'visible';
+        document.getElementById('getThis').style.visibility = 'visible';
+        document.getElementById('updateThis').style.visibility = 'visible';
+        document.getElementById('deleteThis').style.visibility = 'visible';
+                data.highscore[0].time = time;
+                data.highscore[0].score = name;
+
+                if (time1 < time2)
+                {
+                    data.highscore[1].time = time1;
+                    data.highscore[1].score = name1;
+                }
+                if (time2 < time3)
+                {
+                    data.highscore[2].time = time2;
+                    data.highscore[2].score = name2;
+                }
+                arrayNum = 0;
+            }
+            else if(time < data.highscore[1].time)
+            {
+                document.getElementById("highPrompt").innerHTML = "You got the new highscore!";
+                document.getElementById('keyValue').style.visibility = 'visible';
+        document.getElementById('valueText').style.visibility = 'visible';
+        document.getElementById('attributeText').style.visibility = 'visible';
+        document.getElementById('putThis').style.visibility = 'visible';
+        document.getElementById('getThis').style.visibility = 'visible';
+        document.getElementById('updateThis').style.visibility = 'visible';
+        document.getElementById('deleteThis').style.visibility = 'visible';
+                data.highscore[1].time = time;
+                data.highscore[1].score = name1;
+
+                if (time2 < time3)
+                {
+                    data.highscore[2].time = time2;
+                    data.highscore[2].score = name2;
+                }
+                arrayNum = 1;
+            }
+            else if(time < data.highscore[2].time)
+            {
+                document.getElementById("highPrompt").innerHTML = "You got the new highscore!";
+                document.getElementById('keyValue').style.visibility = 'visible';
+        document.getElementById('valueText').style.visibility = 'visible';
+        document.getElementById('attributeText').style.visibility = 'visible';
+        document.getElementById('putThis').style.visibility = 'visible';
+        document.getElementById('getThis').style.visibility = 'visible';
+        document.getElementById('updateThis').style.visibility = 'visible';
+        document.getElementById('deleteThis').style.visibility = 'visible';
+                data.highscore[2].time = time;
+                data.highscore[2].score = name2;
+                arrayNum = 2;
+            }
+        }
+
+        //Validate name and change highscore
+        function nameSubmit()
+        {
+            var name; 
+            name = document.getElementById("name").value;
+            data.highscore[arrayNum].score = name;
+
+            if (name != "")
+            {
+                var text = data.highscore[arrayNum].score + ": " + data.highscore[arrayNum].time + " seconds. Click Reset to play again!" ;
+                document.getElementById("validName").innerHTML = text;
+                document.getElementById("highscore").innerHTML = "";
+                data.highscore.forEach(function(item)
+                    {
+                    document.getElementById("highscore").innerHTML += item.score + ": " + item.time + " seconds" + "<br>";
+                    });
+            }
+            else
+            {
+                var text = "Name is not valid. Please try again.";
+                document.getElementById("validName").innerHTML = text;
+            }
+        }
+        </script>
+    </body>
+    <head>
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.2.18.min.js"></script>
+
+        <title>Shooting Practice</title>
+        <meta charset="UTF-8">
+            </head>
+    <body>
+        
+        <div>
+            <p id="output">
+        </div>
+        <script>
+            var roleArn = 'arn:aws:iam::111950665511:role/cistest'; //from AWS IAM
+            var appId = '256130938159288'; //from facebook
+            // This is called with the results from from FB.getLoginStatus().
+            function statusChangeCallback(response) {
+                console.log('statusChangeCallback');
+                console.log(response);
+                // The response object is returned with a status field that lets the
+                // app know the current login status of the person.
+                // Full docs on the response object can be found in the documentation
+                // for FB.getLoginStatus().
+                if (response.status === 'connected') {
+                    // Logged into your app and Facebook.
+                    AWS.config.credentials = new AWS.WebIdentityCredentials({ //WIF
+                                                                            RoleArn: roleArn,
+                                                                            ProviderId: 'graph.facebook.com',
+                                                                            WebIdentityToken: response.authResponse.accessToken
+                                                                            });
+                    //createUIForCRUD();
+                    testAPI();
+                } else if (response.status === 'not_authorized') {
+                    // The person is logged into Facebook, but not your app.
+                    document.getElementById('status').innerHTML = 'Please log ' +
+                    'into this app.';
+                } else {
+                    // The person is not logged into Facebook, so we're not sure if
+                    // they are logged into this app or not.
+                    document.getElementById('status').innerHTML = 'Please log ' +
+                    'into Facebook.';
+                }
+            }
+        
+        
+        // This function is called when someone finishes with the Login
+        // Button.  See the onlogin handler attached to it in the sample
+        // code below.
+        function checkLoginState()
+        {
+            FB.getLoginStatus(function(response) {
+                              statusChangeCallback(response);
+                              });
+        }
+        
+        window.fbAsyncInit = function()
+        {
+            FB.init({
+                    appId      : appId,
+                    cookie     : true,  // enable cookies to allow the server to access
+                    // the session
+                    xfbml      : true,  // parse social plugins on this page
+                    version    : 'v2.8' // use graph api version 2.8
+                    });
+                    
+                    // Now that we've initialized the JavaScript SDK, we call
+                    // FB.getLoginStatus().  This function gets the state of the
+                    // person visiting this page and can return one of three states to
+                    // the callback you provide.  They can be:
+                    //
+                    // 1. Logged into your app ('connected')
+                    // 2. Logged into Facebook, but not your app ('not_authorized')
+                    // 3. Not logged into Facebook and can't tell if they are logged into
+                    //    your app or not.
+                    //
+                    // These three cases are handled in the callback function.
+                    
+                    FB.getLoginStatus(function(response) {
+                                      statusChangeCallback(response);
+                                      });
+                                      
+        };
+        
+        // Load the SDK asynchronously
+        (function(d, s, id)
+         {
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) return;
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+         }(document, 'script', 'facebook-jssdk'));
+         
+         // Here we run a very simple test of the Graph API after login is
+         // successful.  See statusChangeCallback() for when this call is made.
+         function testAPI() {
+             console.log('Welcome!  Fetching your information.... ');
+             FB.api('/me', function(response) {
+                    console.log('Successful login for: ' + response.name);
+                    document.getElementById('status').innerHTML =
+                    'Thanks for logging in, ' + response.name + '!';
+                    });
+         }
+        
+            </script>
+        
+        
+        <script>
+            var fbUserId;
+            var params;
+            var keyText;
+            var attText;
+            var valText;
+            var dynamodb = null;
+            var docClient = null;
+            var appId = '256130938159288'; //from facebook
+            var roleArn = 'arn:aws:iam::111950665511:role/cistest'; //from AWS IAM
+            var resultData = null;
+            
+            document.getElementById('putThis').onclick = function () {
+                dynamodb = new AWS.DynamoDB({ region: 'us-west-2' });
+                docClient = new AWS.DynamoDB.DocumentClient({ service: dynamodb });
+                keyText = document.getElementById("keyValue").value;
+                attText = document.getElementById("attributeText").value;
+                valText = document.getElementById("valueText").value;
+                console.log("Key Value: ", keyText);
+                console.log("Attribute: ", attText);
+                console.log("Value: ", valText);
+                params = {
+                    TableName: 'defaultScore',
+                    Item: {
+                        score: keyText,
+                        default: valText
+                    }
+                };
+                docClient.put(params, function(err, data){
+                              if (err) console.log(err);
+                              else
+                              {
+                              resultData = data;
+                              console.log(resultData);
+                              
+                              }
+                              })
+                              
+                              
+            };
+        
+        document.getElementById('getThis').onclick = function () {
+            dynamodb = new AWS.DynamoDB({ region: 'us-west-2' });
+            docClient = new AWS.DynamoDB.DocumentClient({ service: dynamodb });
+            keyText = document.getElementById("keyValue").value;
+            attText = document.getElementById("attributeText").value;
+            console.log("Key Value: ", keyText);
+            console.log("Attribute: ", attText);
+            params = {
+                TableName: 'defaultScore',
+                Key: {
+                    score: keyText
+                },
+                ProjectionExpression: "#a",
+                ExpressionAttributeNames: {
+                    '#a': attText
+                }
+            };
+            docClient.get(params, function (err, data)
+                          {
+                          if (err)
+                          {
+                          console.log(err, err.stack);
+                          }
+                          else
+                          {
+                          console.log("success, logging data: ");
+                          console.log(data);//shows keys
+                          console.log("attribute 1 is " + data.Item.attribute1)
+                          //var output = data.Item.attribute1;
+                          l = document.getElementById("output");
+                          l.innerHTML = data.Item.attribute1;
+                          }
+                          })
+        };
+        
+        document.getElementById('updateThis').onclick = function () {
+            dynamodb = new AWS.DynamoDB({ region: 'us-west-2' });
+            docClient = new AWS.DynamoDB.DocumentClient({ service: dynamodb });
+            keyText = document.getElementById("keyValue").value;
+            attText = document.getElementById("attributeText").value;
+            valText = document.getElementById("valueText").value;
+            console.log("Key Value: ", keyText);
+            console.log("Attribute: ", attText);
+            console.log("Value: ", valText);
+            params = {
+                TableName: 'defaultScore',
+                Key: {
+                    score: keyText
+                },
+                ExpressionAttributeNames: {
+                    '#a': attText
+                },
+                ExpressionAttributeValues: {
+                    ':v': valText
+                },
+                UpdateExpression: 'set #a = :v',
+            };
+            
+            docClient.update(params, function (err, data) {
+                             if (err) console.log(err);
+                             else console.log(data);
+                             })
+        };
+        
+        document.getElementById('deleteThis').onclick = function () {
+            dynamodb = new AWS.DynamoDB({ region: 'us-west-2' });
+            docClient = new AWS.DynamoDB.DocumentClient({ service: dynamodb });
+            keyText = document.getElementById("keyValue").value;
+            console.log("Key Value: ", keyText);
+            params = {
+                TableName: 'defaultScore',
+                Key: {
+                    score: keyText
+                }
+            };
+            docClient.delete(params, function(err, data){
+                             if(err) console.log(err);
+                             else console.log(data);
+                             });
+        };
+</script>
+        
+        <!--
+         Below we include the Login Button social plugin. This button uses
+         the JavaScript SDK to present a graphical Login button that triggers
+         the FB.login() function when clicked.
+         -->
+        
+<!--        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">-->
+<!--            </fb:login-button>-->
+<!--            -->
+<!--            <div id="status">-->
+<!--            </div>-->
+<!--            </body>-->
+</html>
